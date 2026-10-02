@@ -1,0 +1,61 @@
+{
+  "ready": {
+    "status": "ready",
+    "backend": "timesfm3",
+    "device": "cuda",
+    "max_context": 256,
+    "max_horizon": 16,
+    "max_batch_series": 4
+  },
+  "http_series_timing": {
+    "queue_ms": 3.3366520001436584,
+    "inference_batch_ms": 808.3170840000093,
+    "service_ms": 811.653736000153,
+    "batch_series": 1
+  },
+  "http_candles_context_end": "2023-11-14T22:45:20+00:00",
+  "http_market_binance": {
+    "status": 200,
+    "context_end": "2026-10-02T16:01:00+00:00",
+    "data_fetch_ms": 194.44443800239242
+  },
+  "http_market_coindcx": {
+    "status": 200,
+    "context_end": "2026-10-02T16:01:00+00:00",
+    "data_fetch_ms": 88.46633999928599
+  },
+  "legacy_coindcx_status": 200,
+  "mcp_http_auto": {
+    "tools": [
+      "forecast_candles",
+      "forecast_market",
+      "forecast_series",
+      "list_providers",
+      "service_status"
+    ],
+    "forecast_matches_http": true,
+    "all_tools_called": true
+  },
+  "mcp_http_legacy": {
+    "tools": [
+      "forecast_candles",
+      "forecast_market",
+      "forecast_series",
+      "list_providers",
+      "service_status"
+    ],
+    "forecast_matches_http": true,
+    "all_tools_called": true
+  },
+  "mcp_stdio_subprocess": {
+    "tools": [
+      "forecast_candles",
+      "forecast_market",
+      "forecast_series",
+      "list_providers",
+      "service_status"
+    ],
+    "forecast_matches_http": true,
+    "launched_outside_project": true
+  }
+}

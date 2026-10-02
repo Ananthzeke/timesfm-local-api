@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import Field, SecretStr, model_validator
+from pydantic import AnyHttpUrl, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     upstream_timeout_seconds: float = Field(default=5, gt=0, le=30)
     max_upstream_requests: int = Field(default=4, ge=1, le=32)
     api_key: SecretStr | None = None
+    api_url: AnyHttpUrl = "http://127.0.0.1:8000"
 
     @model_validator(mode="after")
     def validate_key(self):

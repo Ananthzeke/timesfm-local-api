@@ -4,14 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "timesfm-local-api"
-version = "0.1.0"
+version = "0.2.0"
 description = "Local TimesFM forecasting with bounded inference scheduling and observable latency"
 requires-python = ">=3.11"
 dependencies = [
   "fastapi>=0.115,<1", "uvicorn>=0.34,<1", "numpy>=1.26,<3",
   "httpx[socks]>=0.28,<1", "pydantic>=2.7,<3", "pydantic-settings>=2.7,<3",
   "prometheus-client>=0.21,<1",
+  "mcp>=2.2,<3",
 ]
+
+[project.scripts]
+timesfm-mcp = "app.mcp_server:main"
 
 [project.optional-dependencies]
 model = ["timesfm==3.0.2", "torch>=2.5,<3"]

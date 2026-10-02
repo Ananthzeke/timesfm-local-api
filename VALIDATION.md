@@ -39,3 +39,18 @@
 - Full methods, results, limits, and rollback instructions are in
   `reports/optimization-2026-10-02/REPORT.md`; the earlier measurements are in
   `reports/performance-2026-10-02/REPORT.md`.
+
+## Generalized API and native MCP validation
+
+- `pytest -q`: **47 passed**. Lint and formatting checks passed.
+- Provider-neutral numerical arrays and timestamped observations produced real
+  CUDA forecasts. Live Binance and CoinDCX feeds and the legacy route succeeded.
+- All five native MCP tools were verified over Streamable HTTP in current and
+  legacy negotiation modes. A separate stdio bridge process successfully forwarded
+  calls to the same GPU application without loading another model.
+- Forecast arrays and quantiles matched exactly between HTTP and MCP for identical
+  inputs. Tests covered shared capacity, validation, authentication, and errors.
+- A short warmed HTTP check completed 300/300 requests successfully and reached
+  68.77 requests/second at eight concurrent callers. MCP performance was not
+  separately benchmarked; full conditions and results are in
+  `reports/api-mcp-2026-10-02/REPORT.md`.

@@ -7,7 +7,8 @@ and adjust. It downloads pretrained weights; you do not need to train the model.
 The wrapper uses the forecasting API in `timesfm==3.0.2`. CUDA inference has been
 verified locally on a GTX 1650 with 4 GB VRAM. Hardware-specific measurements and
 their workload details are in `reports/performance-2026-10-02/REPORT.md` and
-`reports/optimization-2026-10-02/REPORT.md`.
+`reports/optimization-2026-10-02/REPORT.md`. Verification of the generalized API,
+MCP transports, and live providers is in `reports/api-mcp-2026-10-02/REPORT.md`.
 
 ## What it does
 
@@ -17,7 +18,9 @@ their workload details are in `reports/performance-2026-10-02/REPORT.md` and
 - Supports optional FIFO batching of compatible requests without running parallel GPU calls.
 - Returns queue, batch inference, and service timings; exports Prometheus metrics.
 - Applies input/body limits, optional API-key authentication, and request deadlines.
-- Fetches completed CoinDCX candles or accepts closes supplied by your MCP server.
+- Forecasts numerical series and timestamped candles from any source.
+- Fetches completed market candles through CoinDCX and Binance adapters.
+- Exposes native MCP tools over Streamable HTTP and a stdio bridge to the running API.
 - Includes a client benchmark, interactive API docs, and CPU-only scheduler tests.
 
 ## 1. Try the API without a GPU or model download
@@ -168,6 +171,8 @@ In `/docs`, expand `POST /v1/forecast`, select **Try it out**, and send:
 }
 ```
 
+The endpoint accepts any numerical time series: sensor readings, demand, sales,
+or market prices. The `id` is your label; it does not select a provider or model.
 `values` must be oldest to newest, finite, and equally spaced. Use at least 32
 observations. `horizon: 4` asks for the next four observations: with one-minute
 candles, that means four future candle closes. Numbers above are synthetic demo
@@ -182,35 +187,145 @@ The response includes `results[0].forecast`, quantiles `0.1` through `0.9`, and:
 | `service_ms` | Time from admission to prediction preparation; excludes HTTP transfer and JSON serialization |
 | `batch_series` | Total series processed in that batch |
 
-Quantiles are model predictions, not guaranteed probabilities for future crypto prices.
+Quantiles are model predictions, not guaranteed coverage for future observations.
 
-## 4. CoinDCX and your MCP server
+## 4. Data sources and market providers
 
-Try this read-only request in a browser:
+| Endpoint | Input and purpose |
+| --- | --- |
+| `POST /v1/forecast` | Ordered numerical arrays from any data source; one or more series |
+| `POST /v1/forecast/candles` | Timestamped observations supplied by your application |
+| `GET /v1/providers` | Available adapters, supported intervals, symbol formats, history limits |
+| `GET /v1/forecast/market` | Fetch market data using `provider` and `symbol`, then forecast |
+| `GET /v1/forecast/coindcx` | Compatible legacy route using `pair`; retains its original response |
+
+For supplied candles, use UTC **opening timestamps in milliseconds** and `close`
+for the observed value. Values may be zero or negative, so this also works for
+non-market data. This complete example forecasts a historical sensor series:
+
+```python
+import httpx
+
+payload = {
+    "id": "temperature",
+    "candles": [
+        {"timestamp_ms": 1700000000000 + i * 60000, "close": -10 + i * 0.2} for i in range(32)
+    ],
+    "interval_ms": 60000,
+    "horizon": 4,
+    "return_quantiles": True,
+    "require_fresh": False,
+}
+response = httpx.post("http://127.0.0.1:8000/v1/forecast/candles", json=payload)
+response.raise_for_status()
+print(response.json())
+```
+
+Candles are sorted chronologically, identical duplicates are collapsed, unfinished
+candles are excluded, and gaps or conflicting duplicates are rejected with `422`.
+Without `context`, all completed observations must fit the configured limit.
+Set `context` explicitly to select the most recent observations. `require_fresh`
+defaults to false for historical evaluation; enable it for live inputs. The response
+includes `context_end`, `forecast_close_times`, and the standard `prediction` result.
+
+Try the generic market endpoint in a browser:
+
+```text
+http://127.0.0.1:8000/v1/forecast/market?provider=binance&symbol=BTCUSDT&interval=1m&context=128&horizon=4
+http://127.0.0.1:8000/v1/forecast/market?provider=coindcx&symbol=B-BTC_USDT&interval=1m&context=128&horizon=4
+```
+
+The legacy request remains available:
 
 ```text
 http://127.0.0.1:8000/v1/forecast/coindcx?pair=B-BTC_USDT&interval=1m&context=128&horizon=4
 ```
 
-Use a currently valid `pair` from CoinDCX market details; `B-BTC_USDT` is an example,
-not a guarantee that a market is available. Supported candle intervals are
-`1m`, `15m`, `1h`, and `1d`. This endpoint fetches historical candles per request;
-it is not a streaming subscription.
+Symbol formats and intervals vary by provider; discover them through `/v1/providers`.
+CoinDCX supports `1m`, `15m`, `1h`, `1d`; Binance supports fixed-duration intervals
+from `1s` to `1w`. Variable calendar-month intervals are excluded. Both public feeds
+have a 1000-row request limit; the adapters cap context at 998 to allow extra candles.
+Configured model limits also apply. Use currently available symbols; provider outages,
+regional restrictions, stale data, gaps, or malformed upstream responses return `502`.
+Market requests always require fresh completed candles with positive closes and return
+`data_fetch_ms` separately. They fetch history per request rather than subscribe to a stream.
+Provider references: [CoinDCX](https://docs.coindcx.com/) and
+[Binance klines](https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/market).
 
-The service sorts candles chronologically, excludes the unfinished candle,
-and rejects insufficient, stale, conflicting, or gapped data. It returns fetch
-time separately and timestamps for forecast candle closes. Invalid upstream data
-returns `502` instead of a misleading prediction.
+To add another source, implement an async adapter in `app/providers.py` with the
+signature `(http_client, symbol, interval, context) -> (values, context_end_ms)`.
+Use `closed_observations` for sorting and validation, raise `CandleError` for upstream
+failures, and register a `MarketProvider` in `PROVIDERS`. HTTP and MCP discover it
+automatically. Adapter URLs are fixed in code; clients cannot supply arbitrary fetch URLs.
 
-For lower latency with your MCP server, keep a rolling buffer of completed
-candles in that server and pass their closes directly to `POST /v1/forecast`.
-[`examples/mcp_bridge.py`](examples/mcp_bridge.py) provides `forecast_closes()`
-for a Python caller. Call it from the MCP tool handler after sorting and validating
-your candles. MCP is the tool protocol; TimesFM consumes the numeric array.
-The bridge is an integration helper, not a tested modification of the external
-`ayagup/coindcx-mcp` repository. No order-placement endpoint is included.
+## 5. MCP access
 
-## 5. Measure latency and throughput
+The API includes a native [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+server. Start the API as usual, then connect a client supporting **Streamable HTTP** to:
+
+```text
+http://127.0.0.1:8000/mcp
+```
+
+If `TF_API_KEY` is configured, send it in the `X-API-Key` header on every MCP HTTP
+request. The endpoint uses localhost Host/Origin checks from the SDK. MCP tools are
+listed through the MCP protocol; the HTTP routes remain available in `/docs`.
+
+| Tool | Purpose |
+| --- | --- |
+| `forecast_series` | Forecast one or more arrays from any source |
+| `forecast_candles` | Forecast supplied timestamped candles |
+| `forecast_market` | Fetch candles through a supported provider and forecast |
+| `list_providers` | Discover adapters and their input formats |
+| `service_status` | Check readiness, device, and configured model limits |
+
+Forecast tools accept a `request` object matching the corresponding HTTP payload.
+For example, arguments for `forecast_market` are:
+
+```json
+{
+  "request": {
+    "provider": "binance",
+    "symbol": "BTCUSDT",
+    "interval": "1m",
+    "context": 128,
+    "horizon": 4,
+    "return_quantiles": true
+  }
+}
+```
+
+Successful calls provide structured results and readable JSON. Expected failures
+set MCP `isError` and include the HTTP status and retry delay where applicable.
+Tools share the API's validation, upstream limits, bounded queue, batching,
+deadlines, and **single GPU worker**.
+
+For clients that launch **stdio** servers, install this project and configure:
+
+```json
+{
+  "mcpServers": {
+    "timesfm": {
+      "command": "/absolute/path/to/timesfm-local-api/.venv/bin/timesfm-mcp",
+      "args": ["--api-url", "http://127.0.0.1:8000"]
+    }
+  }
+}
+```
+
+Replace the executable path with your installed entry point (Windows:
+`.venv\\Scripts\\timesfm-mcp.exe`). The command can also be run as
+`python -m app.mcp_server --api-url http://127.0.0.1:8000` in the installed environment.
+Start the API first: this stdio bridge forwards calls to it and does not load another
+model or reserve GPU memory. It reads the project's `.env`; environment variables
+override it. `TF_API_URL` sets the target when `--api-url` is omitted, and `TF_API_KEY`
+is forwarded as the API credential. Keep keys out of committed client configuration.
+
+For an existing custom MCP server, [`examples/mcp_bridge.py`](examples/mcp_bridge.py)
+still provides `forecast_closes()`. Maintain your own buffer of completed observations
+and send numerical arrays directly to avoid per-call market fetch latency.
+
+## 6. Measure latency and throughput
 
 With the server running, use a second terminal with the virtual environment activated:
 
@@ -233,7 +348,7 @@ numbers are assumed or promised.
 | `TF_MAX_HORIZON` | `64` | Lower it when only a few future candles are needed |
 | `TF_QUEUE_CAPACITY` | `32` | Lower it for earlier overload rejection and shorter queues |
 | `TF_REQUEST_TIMEOUT_SECONDS` | `15` | Adjust to the measured acceptable queue + inference deadline |
-| `TF_MAX_UPSTREAM_REQUESTS` | `4` | Limit simultaneous CoinDCX HTTP fetches |
+| `TF_MAX_UPSTREAM_REQUESTS` | `4` | Limit simultaneous fetches across all market providers |
 
 A larger queue does not make the GPU faster. Keep arrival rate below measured
 capacity and watch p95 latency. Batching combines only adjacent requests with the
@@ -264,14 +379,15 @@ quantization, or compilation changes.
 - `/healthz`: process is alive. `/readyz`: warmed model and live scheduler.
 - `/metrics`: Prometheus HTTP latency, queue depth, outstanding requests, inference
   duration, batch size, completion/error counts, and CUDA allocated/reserved/peak bytes.
-- Optional `TF_API_KEY` protects forecast endpoints and metrics via the `X-API-Key`
-  header. In `/docs`, supply the header field when trying protected endpoints.
+- Optional `TF_API_KEY` protects forecast endpoints, provider discovery, MCP, and
+  metrics via the `X-API-Key` header. In `/docs`, supply the header field when trying
+  protected endpoints.
   Health/readiness/docs remain public; default binding is localhost.
 - `TF_API_KEY` in the caller's environment is used by the benchmark and bridge.
 - `429`: capacity full, with `Retry-After: 1`. `504`: inference deadline exceeded.
   `503`: inference failure/stopping. Uvicorn can also return `503` at its HTTP
   concurrency limit. Caller retries should be bounded and use backoff with jitter.
-- Deadlines cover scheduler wait and inference. CoinDCX fetch has a separate
+- Deadlines cover scheduler wait and inference. Market fetching has a separate
   timeout (default 5 seconds); end-to-end client latency also includes that fetch.
 - A client deadline cannot preempt a running CUDA kernel. A timed-out running
   request retains its slot until inference finishes. Queued timed-out requests are removed.
@@ -292,26 +408,23 @@ pytest -q
 ```
 
 Tests cover validation/authentication, HTTP responsiveness during inference,
-backpressure, deadlines, batching, failure recovery, and mocked CoinDCX responses.
+backpressure, deadlines, batching, failure recovery, neutral candle normalization,
+provider routing and mocked feeds, MCP discovery/tool calls, HTTP protocol handling,
+and stdio bridge forwarding. MCP and HTTP are tested against the same inference capacity.
 They run without downloading weights or installing PyTorch. Real checkpoint and
 GPU validation must be performed locally using the run and benchmark instructions.
 
-## Publish to GitHub
+## Repository
 
-For a **new empty GitHub repository**, replace the URL below with your own URL,
-then run these commands inside this folder using your normal Git authentication:
+The private GitHub repository is
+[Ananthzeke/timesfm-local-api](https://github.com/Ananthzeke/timesfm-local-api),
+with `main` as the default branch. With access to the repository, clone it using:
 
 ```bash
-git init -b timesfm-api
-git add app tests scripts examples .github .gitignore .env.example pyproject.toml README.md
-git commit -m "Add local TimesFM API with bounded inference scheduling"
-git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
-git push -u origin timesfm-api
+git clone https://github.com/Ananthzeke/timesfm-local-api.git
+cd timesfm-local-api
 ```
 
-For an existing repository, copy these files into a new branch of its checkout,
-respect its instructions and existing files, then commit and push that branch.
-Do not commit `.env`, API keys, model checkpoints, or virtual environments.
-
-The application was not pushed from the development session because authenticated
-GitHub access and a destination repository were unavailable.
+Follow the setup instructions above to create your environment and obtain the model.
+Local `.env` settings, API keys, model checkpoints, caches, and virtual environments
+are excluded from Git. Model license acceptance remains a local configuration step.
