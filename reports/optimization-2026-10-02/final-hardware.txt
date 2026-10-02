@@ -1,0 +1,2 @@
+name, memory.total [MiB], memory.used [MiB], utilization.gpu [%], temperature.gpu
+NVIDIA GeForce GTX 1650, 4096 MiB, 1444 MiB, 0 %, 57

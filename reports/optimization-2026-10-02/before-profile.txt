@@ -1,0 +1,41 @@
+         93631 function calls (76361 primitive calls) in 1.090 seconds
+
+   Ordered by: cumulative time
+   List reduced from 204 to 35 due to restriction <35>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       10    0.000    0.000    1.090    0.109 engine.py:107(predict)
+       10    0.001    0.000    1.083    0.108 engine.py:80(_predict)
+       20    0.001    0.000    1.081    0.054 timesfm3_forecaster.py:465(predict_batch)
+       10    0.000    0.000    0.600    0.060 timesfm3_forecaster.py:119(try_gc)
+       10    0.596    0.060    0.596    0.060 {built-in method gc.collect}
+       10    0.001    0.000    0.477    0.048 _contextlib.py:113(decorate_context)
+       10    0.006    0.001    0.476    0.048 model.py:363(decode)
+       10    0.001    0.000    0.463    0.046 model.py:265(forward)
+  5460/30    0.007    0.000    0.383    0.013 module.py:1735(_wrapped_call_impl)
+  5460/30    0.016    0.000    0.383    0.013 module.py:1743(_call_impl)
+       10    0.001    0.000    0.375    0.038 transformer.py:562(forward)
+      200    0.011    0.000    0.372    0.002 transformer.py:464(forward)
+      400    0.030    0.000    0.277    0.001 transformer.py:223(forward)
+     2000    0.003    0.000    0.095    0.000 normalization.py:397(forward)
+     2000    0.002    0.000    0.091    0.000 functional.py:2915(rms_norm)
+     2000    0.089    0.000    0.089    0.000 {built-in method torch.rms_norm}
+     2040    0.003    0.000    0.049    0.000 linear.py:124(forward)
+      400    0.024    0.000    0.049    0.000 transformer.py:105(forward)
+     2040    0.045    0.000    0.045    0.000 {built-in method torch._C._nn.linear}
+      120    0.025    0.000    0.044    0.000 util.py:102(update_running_stats)
+       10    0.005    0.000    0.044    0.004 cpm_revin_refine.py:27(cpm_iterative_revin_refine)
+       10    0.001    0.000    0.041    0.004 model.py:191(_preprocess)
+      400    0.032    0.000    0.032    0.000 {built-in method torch._C._nn.scaled_dot_product_attention}
+       10    0.002    0.000    0.026    0.003 util.py:163(get_running_stats)
+      400    0.010    0.000    0.020    0.000 transformer.py:35(make_attn_mask)
+      400    0.013    0.000    0.017    0.000 normalization.py:42(forward)
+     1590    0.015    0.000    0.015    0.000 {built-in method torch.zeros_like}
+     1400    0.013    0.000    0.013    0.000 {built-in method torch.where}
+     1130    0.012    0.000    0.012    0.000 {built-in method torch.arange}
+      410    0.010    0.000    0.010    0.000 {built-in method torch.cumprod}
+    13570    0.009    0.000    0.009    0.000 module.py:1915(__getattr__)
+       40    0.001    0.000    0.008    0.000 memory.py:221(memory_stats)
+      490    0.008    0.000    0.008    0.000 {built-in method torch.cat}
+     3670    0.007    0.000    0.007    0.000 {method 'view' of 'torch._C.TensorBase' objects}
+       60    0.001    0.000    0.007    0.000 functional.py:210(einsum)

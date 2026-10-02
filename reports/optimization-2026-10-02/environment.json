@@ -1,0 +1,21 @@
+{
+  "backend": "timesfm3",
+  "device": "cuda",
+  "checkpoint": "google/timesfm-3.0-pytorch",
+  "model_revision": "43046b85ec22d584a13f8098c2ed39c889e129c2",
+  "license_accepted": true,
+  "max_context": 256,
+  "max_horizon": 16,
+  "max_batch_series": 4,
+  "batch_window_ms": 2.0,
+  "queue_capacity": 8,
+  "request_timeout_seconds": 15.0,
+  "warmup_runs": 2,
+  "gc_interval_seconds": 30.0,
+  "max_body_bytes": 131072,
+  "upstream_timeout_seconds": 5.0,
+  "max_upstream_requests": 4,
+  "python": "3.11.0rc1",
+  "torch": "2.6.0+cu118",
+  "timesfm": "3.0.2"
+}

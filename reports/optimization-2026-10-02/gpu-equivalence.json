@@ -1,0 +1,74 @@
+[
+  {
+    "context": 32,
+    "horizon": 4,
+    "series": 4,
+    "cleanup_change_bitwise_equal": true,
+    "batch_matches_individual_rtol": 1e-05,
+    "batch_matches_individual_atol": 1e-05,
+    "maximum_absolute_difference": 8.381903171539307e-09
+  },
+  {
+    "context": 32,
+    "horizon": 16,
+    "series": 4,
+    "cleanup_change_bitwise_equal": true,
+    "batch_matches_individual_rtol": 1e-05,
+    "batch_matches_individual_atol": 1e-05,
+    "maximum_absolute_difference": 7.62939453125e-06
+  },
+  {
+    "context": 128,
+    "horizon": 4,
+    "series": 4,
+    "cleanup_change_bitwise_equal": true,
+    "batch_matches_individual_rtol": 1e-05,
+    "batch_matches_individual_atol": 1e-05,
+    "maximum_absolute_difference": 7.62939453125e-06
+  },
+  {
+    "context": 128,
+    "horizon": 16,
+    "series": 4,
+    "cleanup_change_bitwise_equal": true,
+    "batch_matches_individual_rtol": 1e-05,
+    "batch_matches_individual_atol": 1e-05,
+    "maximum_absolute_difference": 7.62939453125e-06
+  },
+  {
+    "context": 255,
+    "horizon": 4,
+    "series": 4,
+    "cleanup_change_bitwise_equal": true,
+    "batch_matches_individual_rtol": 1e-05,
+    "batch_matches_individual_atol": 1e-05,
+    "maximum_absolute_difference": 9.313225746154785e-09
+  },
+  {
+    "context": 255,
+    "horizon": 16,
+    "series": 4,
+    "cleanup_change_bitwise_equal": true,
+    "batch_matches_individual_rtol": 1e-05,
+    "batch_matches_individual_atol": 1e-05,
+    "maximum_absolute_difference": 7.62939453125e-06
+  },
+  {
+    "context": 256,
+    "horizon": 4,
+    "series": 4,
+    "cleanup_change_bitwise_equal": true,
+    "batch_matches_individual_rtol": 1e-05,
+    "batch_matches_individual_atol": 1e-05,
+    "maximum_absolute_difference": 7.62939453125e-06
+  },
+  {
+    "context": 256,
+    "horizon": 16,
+    "series": 4,
+    "cleanup_change_bitwise_equal": true,
+    "batch_matches_individual_rtol": 1e-05,
+    "batch_matches_individual_atol": 1e-05,
+    "maximum_absolute_difference": 7.62939453125e-06
+  }
+]

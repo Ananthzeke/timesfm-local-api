@@ -1,0 +1,18 @@
+{
+  "requests": 10,
+  "concurrency": 1,
+  "context": 128,
+  "horizon": 4,
+  "elapsed_seconds": 1.1602194810002402,
+  "statuses": {
+    "200": 10
+  },
+  "successful_requests_per_second": 8.619058862361863,
+  "client_latency_ms": {
+    "p50": 115.68937000083679,
+    "p95": 119.8917910003729,
+    "p99": 120.08790460091404
+  },
+  "queue_p95_ms": 0.08926154932851203,
+  "inference_batch_p95_ms": 114.54665855271742
+}

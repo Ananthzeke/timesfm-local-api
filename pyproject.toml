@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "timesfm-local-api"
+version = "0.1.0"
+description = "Local TimesFM forecasting with bounded inference scheduling and observable latency"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1", "uvicorn>=0.34,<1", "numpy>=1.26,<3",
+  "httpx[socks]>=0.28,<1", "pydantic>=2.7,<3", "pydantic-settings>=2.7,<3",
+  "prometheus-client>=0.21,<1",
+]
+
+[project.optional-dependencies]
+model = ["timesfm==3.0.2", "torch>=2.5,<3"]
+dev = ["pytest>=8,<10", "pytest-asyncio>=0.24,<2", "ruff>=0.9,<1"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

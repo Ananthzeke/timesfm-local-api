@@ -1,0 +1,186 @@
+{
+  "equivalence": [
+    {
+      "context": 32,
+      "horizon": 4,
+      "forecast_bitwise_equal": true,
+      "quantiles_bitwise_equal": true
+    },
+    {
+      "context": 32,
+      "horizon": 16,
+      "forecast_bitwise_equal": true,
+      "quantiles_bitwise_equal": true
+    },
+    {
+      "context": 256,
+      "horizon": 4,
+      "forecast_bitwise_equal": true,
+      "quantiles_bitwise_equal": true
+    },
+    {
+      "context": 256,
+      "horizon": 16,
+      "forecast_bitwise_equal": true,
+      "quantiles_bitwise_equal": true
+    },
+    {
+      "context": 128,
+      "horizon": 4,
+      "forecast_bitwise_equal": true,
+      "quantiles_bitwise_equal": true
+    },
+    {
+      "context": 128,
+      "horizon": 16,
+      "forecast_bitwise_equal": true,
+      "quantiles_bitwise_equal": true
+    },
+    {
+      "context": 256,
+      "horizon": 4,
+      "forecast_bitwise_equal": true,
+      "quantiles_bitwise_equal": true
+    },
+    {
+      "context": 256,
+      "horizon": 16,
+      "forecast_bitwise_equal": true,
+      "quantiles_bitwise_equal": true
+    }
+  ],
+  "experiments": [
+    {
+      "threads": 6,
+      "batch": 1,
+      "inference_ms": {
+        "p50": 40.32572749929386,
+        "p95": 44.63528220057923,
+        "p99": 52.262328581236936
+      },
+      "series_per_second": 24.366427160999844,
+      "peak_allocated_mib": 1270.880859375
+    },
+    {
+      "threads": 6,
+      "batch": 2,
+      "inference_ms": {
+        "p50": 42.48974499932956,
+        "p95": 51.914672051862,
+        "p99": 57.387039451932644
+      },
+      "series_per_second": 45.72381476586068,
+      "peak_allocated_mib": 1270.9052734375
+    },
+    {
+      "threads": 6,
+      "batch": 4,
+      "inference_ms": {
+        "p50": 43.82635699948878,
+        "p95": 44.74967840142199,
+        "p99": 48.861490508970746
+      },
+      "series_per_second": 90.70819837978267,
+      "peak_allocated_mib": 1271.0693359375
+    },
+    {
+      "threads": 1,
+      "batch": 1,
+      "inference_ms": {
+        "p50": 49.355536999428296,
+        "p95": 55.49084854974353,
+        "p99": 56.06852285811328
+      },
+      "series_per_second": 21.026707187342318,
+      "peak_allocated_mib": 1271.0693359375
+    },
+    {
+      "threads": 1,
+      "batch": 2,
+      "inference_ms": {
+        "p50": 43.90696449991083,
+        "p95": 50.126205951892175,
+        "p99": 62.52571046014054
+      },
+      "series_per_second": 44.5894236611754,
+      "peak_allocated_mib": 1271.0693359375
+    },
+    {
+      "threads": 1,
+      "batch": 4,
+      "inference_ms": {
+        "p50": 44.59609950208687,
+        "p95": 51.845032600976985,
+        "p99": 60.717781798630305
+      },
+      "series_per_second": 86.43735474575423,
+      "peak_allocated_mib": 1271.0693359375
+    },
+    {
+      "threads": 2,
+      "batch": 1,
+      "inference_ms": {
+        "p50": 40.716291001444915,
+        "p95": 47.67604820044653,
+        "p99": 49.35737846069969
+      },
+      "series_per_second": 24.014101080088047,
+      "peak_allocated_mib": 1271.0693359375
+    },
+    {
+      "threads": 2,
+      "batch": 2,
+      "inference_ms": {
+        "p50": 42.01845749958011,
+        "p95": 50.34322480023547,
+        "p99": 53.84958337963326
+      },
+      "series_per_second": 46.35083183201195,
+      "peak_allocated_mib": 1271.0693359375
+    },
+    {
+      "threads": 2,
+      "batch": 4,
+      "inference_ms": {
+        "p50": 43.883199999982025,
+        "p95": 54.36651589916437,
+        "p99": 58.74691260862164
+      },
+      "series_per_second": 87.2109428392812,
+      "peak_allocated_mib": 1271.0693359375
+    },
+    {
+      "threads": 4,
+      "batch": 1,
+      "inference_ms": {
+        "p50": 40.60658950220386,
+        "p95": 43.177659601497,
+        "p99": 43.90515393082751
+      },
+      "series_per_second": 24.409043643639336,
+      "peak_allocated_mib": 1271.0693359375
+    },
+    {
+      "threads": 4,
+      "batch": 2,
+      "inference_ms": {
+        "p50": 41.167693001625594,
+        "p95": 43.653908198393765,
+        "p99": 44.30765606008208
+      },
+      "series_per_second": 48.33974236371156,
+      "peak_allocated_mib": 1271.0693359375
+    },
+    {
+      "threads": 4,
+      "batch": 4,
+      "inference_ms": {
+        "p50": 44.347311501041986,
+        "p95": 47.908861951691506,
+        "p99": 51.91630715220526
+      },
+      "series_per_second": 88.845229453651,
+      "peak_allocated_mib": 1271.0693359375
+    }
+  ]
+}

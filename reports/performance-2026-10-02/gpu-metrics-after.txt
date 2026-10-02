@@ -1,0 +1,137 @@
+# HELP tf_http_request_seconds HTTP handling including serialization
+# TYPE tf_http_request_seconds histogram
+tf_http_request_seconds_bucket{le="0.005",route="/v1/forecast",status="200"} 0.0
+tf_http_request_seconds_bucket{le="0.01",route="/v1/forecast",status="200"} 0.0
+tf_http_request_seconds_bucket{le="0.025",route="/v1/forecast",status="200"} 0.0
+tf_http_request_seconds_bucket{le="0.05",route="/v1/forecast",status="200"} 0.0
+tf_http_request_seconds_bucket{le="0.075",route="/v1/forecast",status="200"} 0.0
+tf_http_request_seconds_bucket{le="0.1",route="/v1/forecast",status="200"} 4.0
+tf_http_request_seconds_bucket{le="0.25",route="/v1/forecast",status="200"} 889.0
+tf_http_request_seconds_bucket{le="0.5",route="/v1/forecast",status="200"} 1145.0
+tf_http_request_seconds_bucket{le="0.75",route="/v1/forecast",status="200"} 1157.0
+tf_http_request_seconds_bucket{le="1.0",route="/v1/forecast",status="200"} 1160.0
+tf_http_request_seconds_bucket{le="2.5",route="/v1/forecast",status="200"} 1169.0
+tf_http_request_seconds_bucket{le="5.0",route="/v1/forecast",status="200"} 1169.0
+tf_http_request_seconds_bucket{le="7.5",route="/v1/forecast",status="200"} 1169.0
+tf_http_request_seconds_bucket{le="10.0",route="/v1/forecast",status="200"} 1169.0
+tf_http_request_seconds_bucket{le="+Inf",route="/v1/forecast",status="200"} 1169.0
+tf_http_request_seconds_count{route="/v1/forecast",status="200"} 1169.0
+tf_http_request_seconds_sum{route="/v1/forecast",status="200"} 256.5385587350429
+tf_http_request_seconds_bucket{le="0.005",route="/v1/forecast",status="429"} 1930.0
+tf_http_request_seconds_bucket{le="0.01",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="0.025",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="0.05",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="0.075",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="0.1",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="0.25",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="0.5",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="0.75",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="1.0",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="2.5",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="5.0",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="7.5",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="10.0",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_bucket{le="+Inf",route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_count{route="/v1/forecast",status="429"} 1987.0
+tf_http_request_seconds_sum{route="/v1/forecast",status="429"} 4.122305788881931
+# HELP tf_http_request_seconds_created HTTP handling including serialization
+# TYPE tf_http_request_seconds_created gauge
+tf_http_request_seconds_created{route="/v1/forecast",status="200"} 1.7909483897287838e+09
+tf_http_request_seconds_created{route="/v1/forecast",status="429"} 1.790948488450239e+09
+# HELP tf_accepted_requests_total Requests admitted
+# TYPE tf_accepted_requests_total counter
+tf_accepted_requests_total 1169.0
+# HELP tf_accepted_requests_created Requests admitted
+# TYPE tf_accepted_requests_created gauge
+tf_accepted_requests_created 1.790948247519678e+09
+# HELP tf_rejected_requests_total Requests rejected
+# TYPE tf_rejected_requests_total counter
+tf_rejected_requests_total{reason="capacity"} 1987.0
+# HELP tf_rejected_requests_created Requests rejected
+# TYPE tf_rejected_requests_created gauge
+tf_rejected_requests_created{reason="capacity"} 1.7909484884479487e+09
+# HELP tf_queue_seconds Time before dispatch, including batching window
+# TYPE tf_queue_seconds histogram
+tf_queue_seconds_bucket{le="0.005"} 642.0
+tf_queue_seconds_bucket{le="0.01"} 642.0
+tf_queue_seconds_bucket{le="0.025"} 642.0
+tf_queue_seconds_bucket{le="0.05"} 642.0
+tf_queue_seconds_bucket{le="0.075"} 642.0
+tf_queue_seconds_bucket{le="0.1"} 679.0
+tf_queue_seconds_bucket{le="0.25"} 904.0
+tf_queue_seconds_bucket{le="0.5"} 1153.0
+tf_queue_seconds_bucket{le="0.75"} 1162.0
+tf_queue_seconds_bucket{le="1.0"} 1163.0
+tf_queue_seconds_bucket{le="2.5"} 1169.0
+tf_queue_seconds_bucket{le="5.0"} 1169.0
+tf_queue_seconds_bucket{le="7.5"} 1169.0
+tf_queue_seconds_bucket{le="10.0"} 1169.0
+tf_queue_seconds_bucket{le="+Inf"} 1169.0
+tf_queue_seconds_count 1169.0
+tf_queue_seconds_sum 122.52893910793864
+# HELP tf_queue_seconds_created Time before dispatch, including batching window
+# TYPE tf_queue_seconds_created gauge
+tf_queue_seconds_created 1.7909482475196986e+09
+# HELP tf_inference_batch_seconds Synchronized end-to-end inference batch time
+# TYPE tf_inference_batch_seconds histogram
+tf_inference_batch_seconds_bucket{le="0.005"} 0.0
+tf_inference_batch_seconds_bucket{le="0.01"} 0.0
+tf_inference_batch_seconds_bucket{le="0.025"} 0.0
+tf_inference_batch_seconds_bucket{le="0.05"} 0.0
+tf_inference_batch_seconds_bucket{le="0.075"} 0.0
+tf_inference_batch_seconds_bucket{le="0.1"} 16.0
+tf_inference_batch_seconds_bucket{le="0.25"} 1159.0
+tf_inference_batch_seconds_bucket{le="0.5"} 1165.0
+tf_inference_batch_seconds_bucket{le="0.75"} 1169.0
+tf_inference_batch_seconds_bucket{le="1.0"} 1169.0
+tf_inference_batch_seconds_bucket{le="2.5"} 1169.0
+tf_inference_batch_seconds_bucket{le="5.0"} 1169.0
+tf_inference_batch_seconds_bucket{le="7.5"} 1169.0
+tf_inference_batch_seconds_bucket{le="10.0"} 1169.0
+tf_inference_batch_seconds_bucket{le="+Inf"} 1169.0
+tf_inference_batch_seconds_count 1169.0
+tf_inference_batch_seconds_sum 132.16137166802582
+# HELP tf_inference_batch_seconds_created Synchronized end-to-end inference batch time
+# TYPE tf_inference_batch_seconds_created gauge
+tf_inference_batch_seconds_created 1.790948247519745e+09
+# HELP tf_batch_series Series per dispatch
+# TYPE tf_batch_series histogram
+tf_batch_series_bucket{le="1.0"} 1169.0
+tf_batch_series_bucket{le="2.0"} 1169.0
+tf_batch_series_bucket{le="4.0"} 1169.0
+tf_batch_series_bucket{le="8.0"} 1169.0
+tf_batch_series_bucket{le="+Inf"} 1169.0
+tf_batch_series_count 1169.0
+tf_batch_series_sum 1169.0
+# HELP tf_batch_series_created Series per dispatch
+# TYPE tf_batch_series_created gauge
+tf_batch_series_created 1.790948247519774e+09
+# HELP tf_completed_series_total Successfully inferred series
+# TYPE tf_completed_series_total counter
+tf_completed_series_total 1169.0
+# HELP tf_completed_series_created Successfully inferred series
+# TYPE tf_completed_series_created gauge
+tf_completed_series_created 1.7909482475197892e+09
+# HELP tf_inference_errors_total Failed batches
+# TYPE tf_inference_errors_total counter
+tf_inference_errors_total 0.0
+# HELP tf_inference_errors_created Failed batches
+# TYPE tf_inference_errors_created gauge
+tf_inference_errors_created 1.7909482475197997e+09
+# HELP tf_oom_retries_total Batch retries after GPU OOM
+# TYPE tf_oom_retries_total counter
+tf_oom_retries_total 0.0
+# HELP tf_oom_retries_created Batch retries after GPU OOM
+# TYPE tf_oom_retries_created gauge
+tf_oom_retries_created 1.7909482475198073e+09
+# HELP tf_outstanding_requests Queued and running requests
+# TYPE tf_outstanding_requests gauge
+tf_outstanding_requests 0.0
+# HELP tf_queue_depth Queued requests
+# TYPE tf_queue_depth gauge
+tf_queue_depth 0.0
+# HELP tf_gpu_memory_bytes PyTorch allocated/reserved/peak bytes
+# TYPE tf_gpu_memory_bytes gauge
+tf_gpu_memory_bytes{kind="allocated"} 1.33139712e+09
+tf_gpu_memory_bytes{kind="reserved"} 1.432354816e+09
+tf_gpu_memory_bytes{kind="peak_allocated"} 1.332615168e+09

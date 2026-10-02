@@ -1,0 +1,15 @@
+{
+  "model": "google/timesfm-3.0-pytorch",
+  "model_revision": "43046b85ec22d584a13f8098c2ed39c889e129c2",
+  "python": "3.11.0rc1",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "pytorch": "2.6.0+cu118",
+  "timesfm": "3.0.2",
+  "maximum_context": 256,
+  "maximum_horizon": 16,
+  "batch_series": 1,
+  "batch_window_ms": 0,
+  "queue_capacity": 4,
+  "request_deadline_seconds": 15,
+  "license_acceptance": "Explicit user consent for non-commercial, non-production evaluation in this conversation."
+}

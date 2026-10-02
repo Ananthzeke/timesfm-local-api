@@ -1,0 +1,8 @@
+{
+  "status": "ready",
+  "backend": "mock",
+  "device": "cpu",
+  "max_context": 256,
+  "max_horizon": 16,
+  "max_batch_series": 1
+}
