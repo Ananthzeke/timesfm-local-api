@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=75"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,6 +7,8 @@ name = "timesfm-local-api"
 version = "0.2.0"
 description = "Local TimesFM forecasting with bounded inference scheduling and observable latency"
 requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 dependencies = [
   "fastapi>=0.115,<1", "uvicorn>=0.34,<1", "numpy>=1.26,<3",
   "httpx[socks]>=0.28,<1", "pydantic>=2.7,<3", "pydantic-settings>=2.7,<3",

@@ -416,9 +416,9 @@ GPU validation must be performed locally using the run and benchmark instruction
 
 ## Repository
 
-The private GitHub repository is
+The public GitHub repository is
 [Ananthzeke/timesfm-local-api](https://github.com/Ananthzeke/timesfm-local-api),
-with `main` as the default branch. With access to the repository, clone it using:
+with `main` as the default branch. Clone it using:
 
 ```bash
 git clone https://github.com/Ananthzeke/timesfm-local-api.git
@@ -428,3 +428,18 @@ cd timesfm-local-api
 Follow the setup instructions above to create your environment and obtain the model.
 Local `.env` settings, API keys, model checkpoints, caches, and virtual environments
 are excluded from Git. Model license acceptance remains a local configuration step.
+
+## License
+
+This project's original source code and documentation are licensed under the
+[Apache License 2.0](LICENSE). Copyright 2026 Ananthzeke. This matches the
+[upstream TimesFM source-code license](https://github.com/google-research/timesfm/blob/master/LICENSE).
+Third-party dependencies retain their own licenses.
+
+**The TimesFM 3.0 pretrained weights have a separate license.** They are not
+included in this repository and remain subject to Google's
+[TimesFM Non-Commercial License v1.0](https://huggingface.co/google/timesfm-3.0-pytorch/blob/main/LICENSE),
+including its non-commercial, non-production and redistribution restrictions.
+This project's Apache 2.0 license does not grant rights to the model weights
+or override those terms. Read and accept the model license before enabling
+`TF_LICENSE_ACCEPTED=true`.
